@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf build && cd ../birdnest-frontend/ && npm run build && cp -r build ../backend"
+    "build:ui": "shx rm -rf build && cd ../birdnest-frontend/ && npm run build && shx cp -r build ../backend"
   },
   "author": "Iiro Poutiainen",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "shx": "^0.3.4"
   }
 }
