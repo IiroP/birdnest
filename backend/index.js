@@ -20,7 +20,7 @@ const fetchPositions = () => {
 					updatePositions(res)
 				})
 			} else {
-				console.err("Unable to parse: ", data)
+				console.error("Unable to parse: ", data)
 			}
 		}))
 }
