@@ -39,7 +39,7 @@ const App = () => {
   const [ closest, setClosest ] = useState(0)
 
   const update = () => {
-    console.log("Updated")
+    //console.log("Updated")
     axios.get(baseUrl).then(response => setDrones(response.data))
     axios.get(`${baseUrl}/closest`).then(response => setClosest(response.data.distance))
   }
