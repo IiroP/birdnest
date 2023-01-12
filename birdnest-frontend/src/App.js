@@ -51,6 +51,11 @@ const App = () => {
     }
   }
 
+  // Get initial data
+  useEffect(() => {
+    update()
+  }, [])
+
   // Refresh data every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
