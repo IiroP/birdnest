@@ -51,11 +51,23 @@ const parseDrones = (data) => {
 	const violating = allDrones.filter(drone => droneInsideCircle(drone))
 	const result = violating.map(async drone => {
 		const owner = await getOwnerInfo(drone.serialNumber)
+		const currentDistance = droneDistance(drone)
+
+		// Closest distance for this drone is either the current distance or previously recorded shorter one
+		let closestDistance = currentDistance
+		const seenPreviously = positions.find(event => event.serialNumber === drone.serialNumber)
+		if (seenPreviously) {
+			if (seenPreviously.closest < currentDistance) {
+				closestDistance = seenPreviously.closest
+			} 
+		}
+
 		const droneInfo = {
 			serialNumber: drone.serialNumber,
 			lastSeen: time,
 			position: [drone.positionX, drone.positionY],
-			distance: droneDistance(drone),
+			distance: currentDistance,
+			closest: closestDistance,
 			owner: owner
 		}
 		return droneInfo
@@ -66,12 +78,6 @@ const parseDrones = (data) => {
 // Calculate drone's distance to nest
 const droneDistance = (drone) => {
 	const distance = Math.sqrt(Math.pow(drone.positionX - 150000, 2) + Math.pow(drone.positionY - 150000, 2))
-	if (distance < 100000 && distance < closestSighting.distance) {
-		closestSighting = {
-			distance: distance,
-			serial: drone.serialNumber
-		}
-	}
 	return distance
 }
 
@@ -99,27 +105,9 @@ const getOwnerInfo = async (serialNumber) => {
 
 let positions = []
 
-//closest sighting (since server restart)
-let closestSighting = {
-	distance: 200000,
-	serial: ""
-} 
-
 // Serve the data at /api
 app.get("/api", (req, res) => {
 	res.json(positions)
-})
-
-// Return the shortest comfirmed distance to the nest
-app.get("/api/closest", (req, res) => {
-	let distance = -1
-	if (closestSighting.distance < 100000) {
-		distance = closestSighting.distance
-	}
-	res.json({
-		distance: distance,
-		serial: closestSighting.serial
-	})
 })
 
 const PORT = process.env.PORT || 8080

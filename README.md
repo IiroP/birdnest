@@ -4,9 +4,9 @@ Available at: https://birdnest-demo.fly.dev/
 
 ## Description
 
-This demo is made for [Project Birdnest assignment](https://assignments.reaktor.com/birdnest/). On the front page you can see the closest confirmed drone distance (since server start) and all violations during the past 10 minutes.
+This demo is made for [Project Birdnest assignment](https://assignments.reaktor.com/birdnest/). On the front page you can see the closest confirmed drone distance and all violations during the past 10 minutes.
 
-Additionally the raw data from backend (list of violations) can be viewed at `/api` and closest sighting at `/api/closest`.
+Additionally the raw data from backend (list of violations) can be viewed at `/api`.
 
 ## Project structure
 

@@ -14,7 +14,7 @@ const Drone = ({drone}) => {
       <h3>{drone.serialNumber}</h3>
       <ul>
         <li>Last seen: {date.toLocaleTimeString("fi-FI")}</li>
-        <li>Distance: {Math.round(drone.distance / 1000)} m</li>
+        <li>Distance: {Math.round(drone.distance / 1000)} m (closest: {Math.round(drone.closest / 1000)} m)</li>
         <li>Owner: {owner}</li>
       </ul>
     </div>
@@ -36,18 +36,17 @@ const Drones = ({drones}) => {
 
 const App = () => {
   const [ drones, setDrones ] = useState([])
-  const [ closest, setClosest ] = useState(0)
 
   const update = () => {
     //console.log("Updated")
     axios.get(baseUrl).then(response => setDrones(response.data))
-    axios.get(`${baseUrl}/closest`).then(response => setClosest(response.data.distance))
   }
 
   const shortestDistance = () => {
-    if (closest === -1) {
+    if (drones.length === 0) {
       return("-")
     } else {
+      const closest = Math.min(...drones.map(drone => drone.closest))
       return(Math.round(closest / 1000) + " m")
     }
   }
